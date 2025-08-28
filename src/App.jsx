@@ -7,12 +7,13 @@ import {difficultyArr} from "./utils/difficulty"
 export default function App(){
   const[range,setRange]=React.useState(3)
   const[category,setCategory]=React.useState(categoryArr)
-  const[difficulty,setDifficulty]=React.useState("")
+  const[difficulty,setDifficulty]=React.useState(difficultyArr)
+  const startGameBtnVisible=category.some(cat=>cat.isSelected===true) && difficulty.some(dif=>dif.isSelected)
+  console.log(startGameBtnVisible)
   function categoryUpdate(id){
     setCategory((prevCategory)=>{
       return(
         prevCategory.map((cat)=>{
-          console.log(cat)
           if(cat.id===id){
             return(
               {...cat, isSelected:!(cat.isSelected)}
@@ -23,11 +24,12 @@ export default function App(){
       )
     })
   }
+  
   return(
     <>
       <main>
         <Aside category={category} categoryUpdate={categoryUpdate} range={range} setRange={setRange} difficulty={difficulty} setDifficulty={setDifficulty}/>
-        <MainComponent/>
+        <MainComponent startGameBtnVisible={startGameBtnVisible}/>
       </main>
     </>
   )

@@ -1,4 +1,4 @@
-const difficultyArr=[
+export const difficultyArr=[
     {
         id:1,
         level:"easy",

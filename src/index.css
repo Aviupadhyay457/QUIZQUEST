@@ -68,8 +68,7 @@ main{
   border-left: 4px solid #4ade80; 
   border-radius: 0.75rem;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  animation: fadeIn 1s ease-in 0.25s forwards;
+  opacity: 1;
 }
 
 .instructions strong {
@@ -77,14 +76,4 @@ main{
   font-weight: 600;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
