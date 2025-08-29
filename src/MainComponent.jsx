@@ -4,11 +4,11 @@ export default function MainComponent(props){
         <section className="main-component">
             <h1>QUIZQUEST</h1>
             {props.startGameBtnVisible && 
-            <motion.button className="start-btn" 
+            <motion.button className="start-btn"
+            onClick={props.fetchTrivia} 
             initial={{opacity:0, y:20, scale:0.25}}
             animate={{opacity:1 ,y:0, scale:1}}
-            transition={{duration:0.25, type:"tween",ease:"easeOut"}}
-            
+            transition={{duration:0.25, type:"tween",ease:"easeOut"}}   
             >
                 <span>▶</span> Start Quiz
             </motion.button>}
