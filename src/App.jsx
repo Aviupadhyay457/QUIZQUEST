@@ -1,8 +1,10 @@
 import Aside from "./Aside"
 import MainComponent from "./MainComponent"
+import QuizQuestions from "./QuizQuestions"
 import React from "react"
 import { categoryArr } from "./utils/category"
 import {difficultyArr} from "./utils/difficulty"
+import { clsx } from "clsx"
 
 export default function App(){
   const[range,setRange]=React.useState(3)
@@ -48,7 +50,7 @@ export default function App(){
       setIsLoading(true)
       const res = await fetch(`https://the-trivia-api.com/v2/questions?categories=${categorySelectedStr}&difficulties=${difficultyselectedVal}&limit=${range}`)
       const data=await res.json()
-      setResponseArr(...data)
+      setResponseArr([...data])
       setIsLoading(false)
     }
     catch(err){
@@ -60,19 +62,21 @@ export default function App(){
 
 
 
+  let mainStyleClass=clsx(isLoading && 'main-for-is-loading')
 
 
   
   return(
-    <>
-    { (responseArr.length===0) &&
-      <main>
+    
+      <main className={mainStyleClass}>
+        { (responseArr.length===0 && !isLoading) &&
+        <>
         <Aside category={category} categoryUpdate={categoryUpdate} range={range} setRange={setRange} difficulty={difficulty} setDifficulty={setDifficulty}/>
         <MainComponent startGameBtnVisible={startGameBtnVisible} fetchTrivia={()=>fetchTrivia()} />
+        </>
+        } 
+        {isLoading && <span className="loader"></span>}
+        {responseArr.length!=0 && !isLoading && <QuizQuestions/>}
       </main>
-    }
-    {isLoading && <h1 style={{color:"red"}}>we are loading your data</h1>}
-    
-    </>
   )
 }
