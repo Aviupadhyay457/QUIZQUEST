@@ -7,7 +7,7 @@ import {difficultyArr} from "./utils/difficulty"
 import { clsx } from "clsx"
 
 export default function App(){
-  const[range,setRange]=React.useState(3)
+  const[range,setRange]=React.useState([3])
   const[category,setCategory]=React.useState(categoryArr)
   const[difficulty,setDifficulty]=React.useState(difficultyArr)
   const startGameBtnVisible=category.some(cat=>cat.isSelected===true) && difficulty.some(dif=>dif.isSelected)
@@ -43,7 +43,6 @@ export default function App(){
   // console.log(categorySelectedStr)
   // console.log(range)
   // console.log(difficultyselectedVal)
-  console.log(responseArr)
 
   async function fetchTrivia(){
     try{
@@ -62,10 +61,8 @@ export default function App(){
 
 
 
-  let mainStyleClass=clsx(isLoading && 'main-for-is-loading')
+  let mainStyleClass=clsx(isLoading && 'main-for-is-loading', !isLoading && responseArr.length!=0 && 'main-for-questions')
 
-
-  
   return(
     
       <main className={mainStyleClass}>
@@ -76,7 +73,7 @@ export default function App(){
         </>
         } 
         {isLoading && <span className="loader"></span>}
-        {responseArr.length!=0 && !isLoading && <QuizQuestions/>}
+        {responseArr.length!=0 && !isLoading && <QuizQuestions responseArr={responseArr}/>}
       </main>
   )
 }

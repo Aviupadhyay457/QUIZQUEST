@@ -86,7 +86,7 @@ export default function Aside(props){
                 </section>
 
                 <section className="range-section">
-                    <h2>Choose Range</h2>
+                    <h2>Questions <span></span></h2>
                     <section className="range-container">
                         <input type="range" min="3" max="10" value={props.range} className="slider" id="quesRange" onChange={handleRange}/>
                         <h3>{props.range}</h3>

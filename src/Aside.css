@@ -2,7 +2,7 @@ aside{
   width:60%;
   /* height: 100%; */
   /* background: url("./assets/main-background-png.png"); */
-  background-color: rgba(7, 7, 7);
+  /* background-color: rgba(7, 7, 7); */
   padding-left: 1rem;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@ aside{
 .main-component{
   width:40%;
   /* height: 100%; */
-  background-color: black;
+  /* background-color: black; */
   
 }
 .categories-section, .difficulty-range-wrapper{
@@ -27,7 +27,7 @@ aside{
   
 }
 .categories-section h2{
-  font-weight: 400;
+  font-weight: 600;
 }
 .categories-container{
   width: 100%;
@@ -90,7 +90,7 @@ aside{
   gap:1rem;
 }
 .difficulty-section h2{
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .difficulty-container{
@@ -132,11 +132,19 @@ aside{
   flex-direction: column;
   gap:1.5rem;
 }
+.range-section h2{
+  font-weight: 600;
+}
+.range-section h2 span{
+  color:#E6C642;
+}
+
 .range-container{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap:0.25rem;
-  
+  /* border:1px solid red; */
+  position: relative;
 }
 /* .range-container input{
   width:225px;
@@ -174,6 +182,12 @@ input[type="range"]::-webkit-slider-thumb{
   box-shadow: -407px 0px 0 395px #FF3E6C;
 }
 
+input[type="range"]::-webkit-slider-thumb::before{
+  content: "+++";
+  color:pink;
+  font-size: 50px;
+}
+
  input[type="range"]::-moz-range-track{
   width:100%;
   height: 25px;
@@ -206,3 +220,28 @@ input[type="range"]::-moz-range-thumb{
 }
 
 
+
+
+@media (min-width: 1210px) {
+  .categories-btn{
+    width:130px;
+    height: 130px;
+  }
+  .categories-btn i{
+  color: #FF3E6C;
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+  }
+  .category{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+  }
+  .category h3{
+    color:white;
+  }
+}

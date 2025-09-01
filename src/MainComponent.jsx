@@ -1,8 +1,9 @@
 import {AnimatePresence, motion} from "framer-motion"
 export default function MainComponent(props){
+    const colors=[]
     return(
         <section className="main-component">
-            <h1>QUIZQUEST</h1>
+            <h1 >QUIZQUEST</h1>
             {props.startGameBtnVisible && 
             <motion.button className="start-btn"
             onClick={props.fetchTrivia} 

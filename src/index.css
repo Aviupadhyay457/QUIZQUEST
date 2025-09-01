@@ -10,7 +10,8 @@ html{
 }
 body{
   width:100%;
-  background-color: rgba(7, 7, 7);
+  /* background-color: rgba(7, 7, 7); */
+  background-image: url(./assets/Animated\ Shape2.svg), linear-gradient(to left, #000428, #004e92);
   height: 100%;
 }
 
@@ -22,6 +23,19 @@ main{
   width: 100%;
   /* height: 100%; */
   display: flex;
+  
+   
+}
+
+.main-for-is-loading{
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.main-for-questions{
+  background-image: url(./assets/Animated\ Shape2.svg) , linear-gradient(to right, #c9d6ff, #e2e2e2);
+  height: 100%;
 }
 
 .main-component{
@@ -31,7 +45,10 @@ main{
   justify-content:baseline;
   align-items: center;
   gap:50px;
-}
+  /* background: url(./assets/Animated\ Shape.svg); */
+  /* background-image: url(./assets/Glowing\ Stars.svg) , linear-gradient(to right, #c9d6ff, #e2e2e2); */
+ 
+} 
 
 .main-component h1{
   /* background-image: linear-gradient(red,blue); */
@@ -63,12 +80,16 @@ main{
   line-height: 1.6;
   max-width: 600px;
   margin: 1.5rem auto;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
   background: rgba(255, 255, 255, 0.05);
+
+  /* background: rgb(58, 58, 58); */
   border-left: 4px solid #4ade80; 
   border-radius: 0.75rem;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
   opacity: 1;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .instructions strong {
@@ -78,34 +99,65 @@ main{
 
 
 .loader {
-            
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            position: relative;
-            transform:rotate(45deg);
-            background: #fff;
-          }
-          .loader::before {
-            content: "";
-            box-sizing: border-box;
-            position: absolute;
-            inset: 0px;
-            border-radius: 50%;
-            border:24px solid #FF3E6C;
-            animation: prixClipFix 1.5s infinite linear;
-          }
+    animation: rotate 1s infinite;
+    height: 50px;
+    width: 50px;
+  }
 
-          @keyframes prixClipFix {
-              0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-              25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-              50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-              75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-              100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
-          }
+  .loader:before,
+  .loader:after {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 20px;
+    width: 20px;
+  }
+  .loader:before {
+    animation: ball1 1s infinite;
+    background-color: #fff;
+    box-shadow: 30px 0 0 #FF3E6C;
+    margin-bottom: 10px;
+  }
+  .loader:after {
+    animation: ball2 1s infinite;
+    background-color: #FF3E6C;
+    box-shadow: 30px 0 0 #fff;
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg) scale(0.8) }
+    50% { transform: rotate(360deg) scale(1.2) }
+    100% { transform: rotate(720deg) scale(0.8) }
+  }
+
+  @keyframes ball1 {
+    0% {
+      box-shadow: 30px 0 0 #FF3E6C;
+    }
+    50% {
+      box-shadow: 0 0 0 #FF3E6C;
+      margin-bottom: 0;
+      transform: translate(15px, 15px);
+    }
+    100% {
+      box-shadow: 30px 0 0 #FF3E6C;
+      margin-bottom: 10px;
+    }
+  }
+
+  @keyframes ball2 {
+    0% {
+      box-shadow: 30px 0 0 #fff;
+    }
+    50% {
+      box-shadow: 0 0 0 #fff;
+      margin-top: -20px;
+      transform: translate(15px, 15px);
+    }
+    100% {
+      box-shadow: 30px 0 0 #fff;
+      margin-top: 0;
+    }
+  }
+  
       
-.main-for-is-loading{
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}

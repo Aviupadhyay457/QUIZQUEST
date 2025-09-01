@@ -28,7 +28,7 @@ export const categoryArr=[
 
     {
         id:10,
-        name:"music",
+        name:"Music",
         icon:"fa-solid fa-paw",
         isSelected:false,
         bgColor:"#F94E4E",
