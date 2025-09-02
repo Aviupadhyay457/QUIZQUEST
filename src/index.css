@@ -35,6 +35,7 @@ main{
 
 .main-for-questions{
   background-image: url(./assets/Animated\ Shape2.svg) , linear-gradient(to right, #c9d6ff, #e2e2e2);
+  background: white;
   height: 100%;
 }
 
