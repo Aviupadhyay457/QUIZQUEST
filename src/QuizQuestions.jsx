@@ -1,12 +1,17 @@
 import { progress } from "motion"
 import "./QuizQuestions.css"
 import { useState } from "react"
+import React from "react"
 import {clsx} from "clsx"
 export default function QuizQuestions(props){
     const [questionsArr, setQuestionsArr]=useState(QuestionsArrFun())
     const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())
+    const [displayTriviaData, setDisplayTriviaData]=useState({})
+    console.log(displayTriviaData)
 
-    // console.log( props.responseArr)
+    React.useEffect(()=>{
+        setDisplayTriviaData(questionsArr[0])
+        },[])
     function QuestionsArrFun(){
          let x=props.responseArr.map((arr,index)=>(
             {
@@ -23,15 +28,13 @@ export default function QuizQuestions(props){
 
     function ProgressNumbersFun(){
         let y=questionsArr.map((ques,index)=>(
-            {id:ques.id,number:index+1,status:["neutral"]}
+            {id:ques.id,number:index+1,status:index===0?["active"]:["neutral"]}
         ))
         return y
     }
 
-    console.log(questionsArr)
-    console.log(progressNumbers)
 
-
+    function progressNumbersItemsFun(){
     let progressNumbersItems=progressNumbers.map((ques,index)=>{
         if(index!==progressNumbers.length-1){
             return( <div key={ques.id} className="progress-outer-div">
@@ -50,11 +53,15 @@ export default function QuizQuestions(props){
             )
         }
         })
-        console.log(progressNumbersItems)
+        return progressNumbersItems
+    }
+
+       
+     
 
     function shuffleOptions(arr){
         for(let i=arr.length-1; i>=0;i--){
-            let j=Math.floor(Math.random()*i+1)
+            let j=Math.floor(Math.random()*(i+1))
 
             let x=arr[i]
             arr[i]=arr[j]
@@ -67,29 +74,48 @@ export default function QuizQuestions(props){
 
     function handleprogressStepperClick(id){
         console.log("click working")
+        displayTriviaFun(id)
         setProgressNumbers((progressNumbers)=>(
             progressNumbers.map((ques)=>{
             if(ques.id===id){
-                let newStatus=ques.status.map((stat)=>{
-                    if(stat==="neutral" || stat==="active"){
-                        return "active"
-                    }
-                })
-                return {...ques, status:[...newStatus]}
+                let newStatus=ques.status.filter((stat)=>stat!=="neutral")
+                return {...ques, status:newStatus.includes("active")?[...newStatus]:[...newStatus,"active"]}
             }
             if(ques.id!==id){
-                let newStatus=ques.status.map((stat)=>{
-                    if(stat==="active" || stat==="neutral"){
-                        return "neutral"
-                    }
-
-                })
-                return {...ques, status:[...newStatus]}
+                let newStatus=ques.status.filter((stat)=>stat!=="active")
+                return {...ques, status:newStatus.includes("neutral")?[...newStatus]:[...newStatus,"neutral"]}
             }
         })
         ))
-
+        
     }
+
+    function displayTriviaFun(id){
+        
+        for( let i=0;i<=questionsArr.length-1;i++){
+            if(questionsArr[i].id===id){
+                setDisplayTriviaData({...questionsArr[i]})
+            }
+        }
+    }
+
+    function displayTriviaItemsFunction(dataObj){
+        console.log("inside fun")
+        let optionsButtons=dataObj.options.map((ele)=>(
+            <button key={ele}>{ele}</button>
+        ))
+        console.log("otp")
+        return(
+            <>
+            <h1>{dataObj.ques.text}</h1>
+            <section className="ques-options">
+                {optionsButtons}
+            </section>
+            </>
+        )
+    }
+    
+
 
     function ClassForProgress(status){
         let ClassNameForProgress=clsx({
@@ -109,6 +135,7 @@ export default function QuizQuestions(props){
         return ClassNameForProgressArrow
     }
     
+    
 
 
 
@@ -121,10 +148,14 @@ export default function QuizQuestions(props){
     // let allOptions=[...(props.responseArr.incorrectAnswers)]
     // allOptions.push(props.responseArr.correctAnswer)
     // console.log(allOptions)
-
     return(
+        <section className="quiz-page">
         <section  className="progress-section">
-            {progressNumbersItems}
+            {progressNumbersItemsFun()}
+        </section>
+        <section className="quiz-section">
+            {Object.keys(displayTriviaData).length!==0 && displayTriviaItemsFunction(displayTriviaData)}
+        </section>
         </section>
     )
 }
