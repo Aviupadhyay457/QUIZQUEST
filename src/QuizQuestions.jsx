@@ -9,7 +9,8 @@ export default function QuizQuestions(props){
     const [displayTriviaData, setDisplayTriviaData]=useState({})
     console.log(displayTriviaData)
 
-    React.useEffect(()=>{
+    
+    React.useEffect(()=>{ //for auto display of first trivia when inital load happens
         setDisplayTriviaData(questionsArr[0])
         },[])
     function QuestionsArrFun(){
@@ -28,7 +29,7 @@ export default function QuizQuestions(props){
 
     function ProgressNumbersFun(){
         let y=questionsArr.map((ques,index)=>(
-            {id:ques.id,number:index+1,status:index===0?["active"]:["neutral"]}
+            {id:ques.id,number:index+1,status:index===0?["active"]:["neutral"], optionsStatus:"noClick"}
         ))
         return y
     }
@@ -90,6 +91,10 @@ export default function QuizQuestions(props){
         
     }
 
+    function handleOptionClick(optionclickedText, id){
+        
+    }
+
     function displayTriviaFun(id){
         
         for( let i=0;i<=questionsArr.length-1;i++){
@@ -100,9 +105,9 @@ export default function QuizQuestions(props){
     }
 
     function displayTriviaItemsFunction(dataObj){
-        console.log("inside fun")
+        console.log(dataObj)
         let optionsButtons=dataObj.options.map((ele)=>(
-            <button key={ele}>{ele}</button>
+            <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)}>{ele}</button>
         ))
         console.log("otp")
         return(
@@ -138,16 +143,6 @@ export default function QuizQuestions(props){
     
 
 
-
-
-    // for(let i=1;i<=questionsArr.length;i++){
-    //     progressNumbers.push(<div key={i} style={{color:"pink", fontSize:"30px"}} className="outer-progress-number"><div className="inner-progress-number">{i}</div></div>)
-    // }
-
-    // console.log(progressNumbers)
-    // let allOptions=[...(props.responseArr.incorrectAnswers)]
-    // allOptions.push(props.responseArr.correctAnswer)
-    // console.log(allOptions)
     return(
         <section className="quiz-page">
         <section  className="progress-section">
