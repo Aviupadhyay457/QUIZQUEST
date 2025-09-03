@@ -6,12 +6,38 @@ import {clsx} from "clsx"
 export default function QuizQuestions(props){
     const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())// progressNumbers is the main array, removed question arr so that there remains a single source of truth
     const [displayTriviaData, setDisplayTriviaData]=useState({})
+    const answeredChangeNotice= progressNumbers.map((ele)=>ele.answered).join("")
+    
+    // const [nextQuesIndex, setNextQuesIndex]=useState(0)
     // console.log(displayTriviaData)
 
+    // React.useEffect(()=>{ //for auto display of first trivia when inital load happens
+    //     setDisplayTriviaData(progressNumbers[0])
+    //     },[])
     
-    React.useEffect(()=>{ //for auto display of first trivia when inital load happens
-        setDisplayTriviaData(progressNumbers[0])
-        },[])
+        // console.log(progressNumbers[0].status)
+    
+    React.useEffect(()=>{
+        let nextQuesIndex=-1
+        for(let i=0;i<=progressNumbers.length-1;i++){
+            if(nextQuesIndex!==-1 && progressNumbers[i].status.includes("active")){
+                nextQuesIndex=i+1
+            }
+            if(nextQuesIndex===-1){
+                nextQuesIndex=0
+                if(progressNumbers[0].status.includes("active")){
+                    nextQuesIndex=1
+                }
+            }
+            
+        }
+        if(nextQuesIndex>progressNumbers.length-1){
+            nextQuesIndex=0
+        }
+        console.log(nextQuesIndex)
+        console.log(progressNumbers[nextQuesIndex])
+        handleprogressStepperClick(progressNumbers[nextQuesIndex].id)
+    },[answeredChangeNotice])
 
 
     function ProgressNumbersFun(){
@@ -24,7 +50,8 @@ export default function QuizQuestions(props){
             incorrectAnswers:arr.incorrectAnswers,
             incorrectAnsState:incorrectAnsStateFunc(arr.incorrectAnswers),
             category:arr.category,
-            status:index===0?["active"]:["neutral"], 
+            // status:index===0?["active"]:["neutral"], 
+            status:["neutral"],
             optionsStatus:"noClick",
             answered:false,
             answeredCorrectly:false,
@@ -77,6 +104,12 @@ export default function QuizQuestions(props){
         }
         return newObj
     }
+    // function progressNumbersAnsweredArrayfunction(){
+    //      return progressNumbers.map((ele)=>
+    //          ele.answered
+    //      )
+    // }
+       
     
 
 
