@@ -1,4 +1,4 @@
-import { progress } from "motion"
+import {AnimatePresence, motion} from "framer-motion"
 import "./QuizQuestions.css"
 import { useState } from "react"
 import React from "react"
@@ -7,6 +7,12 @@ export default function QuizQuestions(props){
     const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())// progressNumbers is the main array, removed question arr so that there remains a single source of truth
     const [displayTriviaData, setDisplayTriviaData]=useState({})
     const answeredChangeNotice= progressNumbers.map((ele)=>ele.answered).join("")
+    // const prevQuesNumber=React.useRef(null)
+    // let dataObj=progressNumbers.find(ques=>ques.status.includes("active"))||null
+    // let traversingForward=prevQuesNumber.current===null ? true : (dataObj!==null && prevQuesNumber.current<dataObj.number)
+    // if(prevQuesNumber.current===1){
+    //     traversingForward=true
+    // }
     
     // const [nextQuesIndex, setNextQuesIndex]=useState(0)
     // console.log(displayTriviaData)
@@ -39,6 +45,12 @@ export default function QuizQuestions(props){
         handleprogressStepperClick(progressNumbers[nextQuesIndex].id)
     },[answeredChangeNotice])
 
+    // React.useEffect(()=>{
+    //     if(dataObj!=null){
+    //         prevQuesNumber.current=dataObj.number
+    //     }
+        
+    // },[dataObj])
 
     function ProgressNumbersFun(){
         let y=props.responseArr.map((arr,index)=>(
@@ -173,20 +185,31 @@ export default function QuizQuestions(props){
 
     function displayTriviaItemsFunction(dataObj){
         let selectedIncorrectAns=""
-        
         let  correctAnswer=dataObj.correctAnswer
         let classBtn=dataObj.optionsStatus==="correctAns"||dataObj.optionsStatus==="incorrectAns"?"CorrectAns":""
         let optionsButtons=dataObj.options.map((ele)=>{
-            return <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""} style={{backgroundColor:dataObj.incorrectAnsState[ele]===true && "#EF4444", color:dataObj.incorrectAnsState[ele]===true && "white"}}>{ele}</button>
+            return <motion.button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""} style={{backgroundColor:dataObj.incorrectAnsState[ele]===true && "#EF4444", color:dataObj.incorrectAnsState[ele]===true && "white"}}
+            >{ele}</motion.button>
         })
+
         // console.log("otp")
+       
         return(
-            <>
-            <h1>{dataObj.ques.text}</h1>
-            <section className="ques-options">
-                {optionsButtons}
-            </section>
-            </>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={dataObj.id}
+                    initial={{ rotateX: 90, opacity: 0 }}
+                    animate={{ rotateX: 0, opacity: 1 }}
+                    exit={{ rotateX: -90, opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                >
+                    <motion.h1>{dataObj.ques.text}</motion.h1>
+                    <motion.section className="ques-options">
+                        {optionsButtons}
+                    </motion.section>
+                </motion.div>
+            </AnimatePresence>
+            
         )
     }
     
