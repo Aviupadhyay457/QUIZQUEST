@@ -92,7 +92,16 @@ export default function QuizQuestions(props){
     }
 
     function handleOptionClick(optionclickedText, id){
-        
+        function getques(){
+            for(let i=0;i<=progressNumbers.length-1;i++){
+            if(progressNumbers[i].id===id){
+                return progressNumbers[i]
+            }
+        }
+        } 
+        let clickedQuestion=getques()
+
+        console.log(clickedQuestion)
     }
 
     function displayTriviaFun(id){
