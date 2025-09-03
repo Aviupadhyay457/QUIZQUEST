@@ -6,25 +6,12 @@ import {clsx} from "clsx"
 export default function QuizQuestions(props){
     const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())// progressNumbers is the main array, removed question arr so that there remains a single source of truth
     const [displayTriviaData, setDisplayTriviaData]=useState({})
-    console.log(displayTriviaData)
+    // console.log(displayTriviaData)
 
     
     React.useEffect(()=>{ //for auto display of first trivia when inital load happens
         setDisplayTriviaData(progressNumbers[0])
         },[])
-
-    function QuestionsArrFun(){
-         let x=props.responseArr.map((arr,index)=>(
-            {
-                id:arr.id,
-                ques:arr.question,
-                options:shuffleOptions([...arr.incorrectAnswers,arr.correctAnswer]),
-                correctAnswer:arr.correctAnswer,
-                category:arr.category
-            }
-        ))
-        return x
-    }
 
 
     function ProgressNumbersFun(){
@@ -36,13 +23,16 @@ export default function QuizQuestions(props){
             correctAnswer:arr.correctAnswer,
             category:arr.category,
             status:index===0?["active"]:["neutral"], 
-            optionsStatus:"noClick",}
+            optionsStatus:"noClick",
+            answeredCorrectly:false,
+            }
         ))
         return y
     }
 
 
     function progressNumbersItemsFun(){
+    
     let progressNumbersItems=progressNumbers.map((ques,index)=>{
         if(index!==progressNumbers.length-1){
             return( <div key={ques.id} className="progress-outer-div">
@@ -81,10 +71,12 @@ export default function QuizQuestions(props){
 
 
     function handleprogressStepperClick(id){
-        console.log("click working")
-        displayTriviaFun(id)
-        setProgressNumbers((progressNumbers)=>(
-            progressNumbers.map((ques)=>{
+        // console.log("click working")
+
+        
+        setProgressNumbers((progressNumbers)=>{
+
+            let updated=progressNumbers.map((ques)=>{
             if(ques.id===id){
                 let newStatus=ques.status.filter((stat)=>stat!=="neutral")
                 return {...ques, status:newStatus.includes("active")?[...newStatus]:[...newStatus,"active"]}
@@ -94,38 +86,58 @@ export default function QuizQuestions(props){
                 return {...ques, status:newStatus.includes("neutral")?[...newStatus]:[...newStatus,"neutral"]}
             }
         })
-        ))
-        
+
+        for( let i=0;i<=updated.length-1;i++){
+            if(updated[i].id===id){
+                setDisplayTriviaData({...updated[i]})
+            }
+        }
+        return updated
+        }
+        )
     }
 
     function handleOptionClick(optionclickedText, id){
-        function getques(){
-            for(let i=0;i<=progressNumbers.length-1;i++){
-            if(progressNumbers[i].id===id){
-                return progressNumbers[i]
-            }
-        }
-        } 
-        let clickedQuestion=getques()
+        setProgressNumbers((PrevProgressNumbers)=>{
 
-        console.log(clickedQuestion)
+            let updated=PrevProgressNumbers.map((ques)=>{
+                if(ques.id===id){
+                    if(ques.correctAnswer===optionclickedText){
+                        return {...ques,status:[...ques.status,"correct"], optionsStatus:"correctAns"}
+                    }
+                    else
+                        return {...ques,status:[...ques.status,"inCorrect"]}
+                }
+                else return ques
+            })
+            for( let i=0;i<=updated.length-1;i++){
+                if(updated[i].id===id){
+                    setDisplayTriviaData({...updated[i]})
+                }
+            }
+            return updated
+
+        })
     }
 
-    function displayTriviaFun(id){
+
+    // function displayTriviaFun(id){
         
-        for( let i=0;i<=progressNumbers.length-1;i++){
-            if(progressNumbers[i].id===id){
-                setDisplayTriviaData({...progressNumbers[i]})
-            }
-        }
-    }
+    //     for( let i=0;i<=progressNumbers.length-1;i++){
+    //         if(progressNumbers[i].id===id){
+    //             setDisplayTriviaData({...progressNumbers[i]})
+    //         }
+    //     }
+    // }
 
     function displayTriviaItemsFunction(dataObj){
         console.log(dataObj)
+        let  correctAnswer=dataObj.correctAnswer
+        let classBtn=dataObj.status.includes("correct")?"CorrectAns":""
         let optionsButtons=dataObj.options.map((ele)=>(
-            <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)}>{ele}</button>
+            <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""}>{ele}</button>
         ))
-        console.log("otp")
+        // console.log("otp")
         return(
             <>
             <h1>{dataObj.ques.text}</h1>
@@ -143,6 +155,10 @@ export default function QuizQuestions(props){
             progressBtn:true,
             neutral: status.includes("neutral"),
             active:status.includes("active"),
+            neutralIncorrect: status.includes("neutral") && status.includes("inCorrect"),
+            neutralCorrect:status.includes("neutral") && status.includes("correct"),
+            activeIncorrect:status.includes("active") && status.includes("inCorrect"),
+            activeCorrect:status.includes("active") && status.includes("correct"),
         })
         return ClassNameForProgress
     }
@@ -150,15 +166,14 @@ export default function QuizQuestions(props){
     function ClassForProgressArrow(ques){
         let ClassNameForProgressArrow=clsx({
             progressArrow:true,
-            correctArrow:ques.status.includes("correct"),
-            incorrectArrow:ques.status.includes("incorrect")
+            ArrowColor:ques.status.includes("correct") || ques.status.includes("inCorrect"),
         })
         return ClassNameForProgressArrow
     }
     
     
 
-
+    // console.log(progressNumbers)
     return(
         <section className="quiz-page">
         <section  className="progress-section">

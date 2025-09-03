@@ -49,15 +49,48 @@
     height: 3px;
 } */
 
-.inactive{
-    background-color: #36454F;
+.neutral{
+    background-color: #334155;
 }
 
 .active{
     background-color: white;
-    border:3px solid white;
+    
     color:black;
+    border:4px solid #2563eb;
+    box-shadow: 0 0 6px 2px rgba(37, 99, 235, 0.7);
+
 }
+.neutralIncorrect{
+    background-color:#EF4444;
+    border:1px solid #EF4444;
+    color:white
+}
+
+.neutralCorrect{
+    background-color: #22C55E;
+    border:1px solid #22C55E;
+    color:white
+}
+
+.activeIncorrect{
+    background-color: #EF4444;
+    color:white;
+    border:4px solid #2563eb;
+    box-shadow: 0 0 6px 2px rgba(37, 99, 235, 0.7);
+}
+.activeCorrect{
+    background-color: #22C55E;
+    color:white;
+    border:4px solid #2563eb;
+    box-shadow: 0 0 6px 2px rgba(37, 99, 235, 0.7);
+    
+}
+
+.ArrowColor{
+    border:4px solid #2563eb;
+}
+
 
 
 
@@ -98,4 +131,9 @@
     text-align: center;
     color:#0D47A1;
     font-weight: 500;
+}
+
+.ques-options .CorrectAns{
+    background-color: #22C55E;
+    color:white;
 }
