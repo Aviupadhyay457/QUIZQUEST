@@ -21,9 +21,12 @@ export default function QuizQuestions(props){
             ques:arr.question, 
             options:shuffleOptions([...arr.incorrectAnswers,arr.correctAnswer]),  
             correctAnswer:arr.correctAnswer,
+            incorrectAnswers:arr.incorrectAnswers,
+            incorrectAnsState:incorrectAnsStateFunc(arr.incorrectAnswers),
             category:arr.category,
             status:index===0?["active"]:["neutral"], 
             optionsStatus:"noClick",
+            answered:false,
             answeredCorrectly:false,
             }
         ))
@@ -67,6 +70,13 @@ export default function QuizQuestions(props){
         }
         return arr
     }
+    function incorrectAnsStateFunc(arr){
+        let newObj={}
+        for(let i=0;i<arr.length;i++){
+            newObj[arr[i]]=false
+        }
+        return newObj
+    }
     
 
 
@@ -98,15 +108,23 @@ export default function QuizQuestions(props){
     }
 
     function handleOptionClick(optionclickedText, id){
+        
         setProgressNumbers((PrevProgressNumbers)=>{
 
             let updated=PrevProgressNumbers.map((ques)=>{
-                if(ques.id===id){
+                if(ques.id===id && ques.answered===false){
                     if(ques.correctAnswer===optionclickedText){
-                        return {...ques,status:[...ques.status,"correct"], optionsStatus:"correctAns"}
+                        return {...ques,status:[...ques.status,"correct"], optionsStatus:"correctAns", answered:true, answeredCorrectly:true}
                     }
                     else
-                        return {...ques,status:[...ques.status,"inCorrect"]}
+                        {
+                            let incorrectAnsStateUpdate = {...ques.incorrectAnsState}
+                            incorrectAnsStateUpdate[optionclickedText]=true
+                            console.log(incorrectAnsStateUpdate)
+
+                            return {...ques,status:[...ques.status,"inCorrect"], optionsStatus:"incorrectAns", incorrectAnsState:{...incorrectAnsStateUpdate}, answered:true}
+                        }
+
                 }
                 else return ques
             })
@@ -120,23 +138,14 @@ export default function QuizQuestions(props){
         })
     }
 
-
-    // function displayTriviaFun(id){
-        
-    //     for( let i=0;i<=progressNumbers.length-1;i++){
-    //         if(progressNumbers[i].id===id){
-    //             setDisplayTriviaData({...progressNumbers[i]})
-    //         }
-    //     }
-    // }
-
     function displayTriviaItemsFunction(dataObj){
-        console.log(dataObj)
+        let selectedIncorrectAns=""
+        
         let  correctAnswer=dataObj.correctAnswer
-        let classBtn=dataObj.status.includes("correct")?"CorrectAns":""
-        let optionsButtons=dataObj.options.map((ele)=>(
-            <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""}>{ele}</button>
-        ))
+        let classBtn=dataObj.optionsStatus==="correctAns"||dataObj.optionsStatus==="incorrectAns"?"CorrectAns":""
+        let optionsButtons=dataObj.options.map((ele)=>{
+            return <button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""} style={{backgroundColor:dataObj.incorrectAnsState[ele]===true && "#EF4444", color:dataObj.incorrectAnsState[ele]===true && "white"}}>{ele}</button>
+        })
         // console.log("otp")
         return(
             <>
