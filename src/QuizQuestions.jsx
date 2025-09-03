@@ -4,15 +4,15 @@ import { useState } from "react"
 import React from "react"
 import {clsx} from "clsx"
 export default function QuizQuestions(props){
-    const [questionsArr, setQuestionsArr]=useState(QuestionsArrFun())
-    const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())
+    const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())// progressNumbers is the main array, removed question arr so that there remains a single source of truth
     const [displayTriviaData, setDisplayTriviaData]=useState({})
     console.log(displayTriviaData)
 
     
     React.useEffect(()=>{ //for auto display of first trivia when inital load happens
-        setDisplayTriviaData(questionsArr[0])
+        setDisplayTriviaData(progressNumbers[0])
         },[])
+
     function QuestionsArrFun(){
          let x=props.responseArr.map((arr,index)=>(
             {
@@ -28,8 +28,15 @@ export default function QuizQuestions(props){
 
 
     function ProgressNumbersFun(){
-        let y=questionsArr.map((ques,index)=>(
-            {id:ques.id,number:index+1,status:index===0?["active"]:["neutral"], optionsStatus:"noClick"}
+        let y=props.responseArr.map((arr,index)=>(
+            {id:arr.id,
+            number:index+1,
+            ques:arr.question, 
+            options:shuffleOptions([...arr.incorrectAnswers,arr.correctAnswer]),  
+            correctAnswer:arr.correctAnswer,
+            category:arr.category,
+            status:index===0?["active"]:["neutral"], 
+            optionsStatus:"noClick",}
         ))
         return y
     }
@@ -106,9 +113,9 @@ export default function QuizQuestions(props){
 
     function displayTriviaFun(id){
         
-        for( let i=0;i<=questionsArr.length-1;i++){
-            if(questionsArr[i].id===id){
-                setDisplayTriviaData({...questionsArr[i]})
+        for( let i=0;i<=progressNumbers.length-1;i++){
+            if(progressNumbers[i].id===id){
+                setDisplayTriviaData({...progressNumbers[i]})
             }
         }
     }
