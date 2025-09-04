@@ -38,7 +38,7 @@
 }
 .progressArrow{
     width: 30px;
-    height: 3px;
+    height: 6px;
     align-self: center;
     background-color:#36454F
 }
@@ -93,10 +93,11 @@
 
 
 
-
-
-
 .quiz-section{
+    align-self: center;
+}
+
+.quiz-div{
 
     display: flex;
     flex-direction: column;
@@ -105,11 +106,14 @@
     width: 700px;
 }
 
+
 .quiz-section h1{
     color:white;
     font-size: 1.5rem;
     text-align: justify;
 }
+
+
 
 .ques-options{
     display: grid;
@@ -131,9 +135,27 @@
     text-align: center;
     color:#0D47A1;
     font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 1s;
+}
+
+.ques-options button:hover{
+    opacity: 1;
 }
 
 .ques-options .CorrectAns{
     background-color: #22C55E;
     color:white;
+    animation-name: correctAnsAnim;
+    animation-duration: 0.5s;
+    opacity: 1;
 }
+
+/* @keyframes correctAnsAnim {
+    from{
+        transform: scale(1) rotateY(20 deg);
+    }
+    to{
+         transform: scale(1.2) rotateY(0 deg);
+    }
+} */

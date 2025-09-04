@@ -1,4 +1,4 @@
-import {AnimatePresence, motion} from "framer-motion"
+import {AnimatePresence, delay, motion} from "framer-motion"
 import "./QuizQuestions.css"
 import { useState } from "react"
 import React from "react"
@@ -67,6 +67,7 @@ export default function QuizQuestions(props){
             optionsStatus:"noClick",
             answered:false,
             answeredCorrectly:false,
+            clickFrom:""
             }
         ))
         return y
@@ -78,9 +79,56 @@ export default function QuizQuestions(props){
     let progressNumbersItems=progressNumbers.map((ques,index)=>{
         if(index!==progressNumbers.length-1){
             return( <div key={ques.id} className="progress-outer-div">
-                <button className={ClassForProgress(ques.status)} onClick={()=> handleprogressStepperClick(ques.id)}> {ques.number}
-                </button>
-                <div className={ClassForProgressArrow(ques)}></div>
+                <motion.button className="progressBtn" 
+                animate={ClassForProgress2(ques.status)}
+                onClick={()=> handleprogressStepperClick(ques.id)}
+                variants={{
+                    neutral:{
+                        backgroundColor:"#334155"
+                    },
+                    active:{
+                        backgroundColor:"#FFFFFF",
+                        color:"#000000",
+                        border:'4px solid #2563eb',
+                        boxShadow:'0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                    neutralIncorrect:{
+                        backgroundColor:"#EF4444",
+                        color:"#FFFFFF",
+                        border:'1px solid #EF4444',  
+                    },
+                    neutralCorrect:{
+                        backgroundColor:"#22C55E",
+                        color:"#FFFFFF",
+                        border:'1px solid #22C55E',  
+                    },
+                    activeIncorrect:{
+                        backgroundColor:"#EF4444",
+                        color:"#FFFFFF",
+                        border:'4px solid #2563eb',  
+                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                    activeCorrect:{
+                        backgroundColor:"#22C55E",
+                        color:"#FFFFFF",
+                        border:'4px solid #2563eb',  
+                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                }}
+                transition={{delay:ques.clickFrom=="stepper"?0:1.25}}
+                    >
+                         {ques.number}
+                </motion.button>
+                <motion.div 
+                // className={ClassForProgressArrow(ques)}
+                className="progressArrow"
+                initial={{backgroundColor:'#36454F'}}
+                animate={{
+                    backgroundColor:(ques.status.includes("correct") || ques.status.includes("inCorrect"))?'#2563EB':'#36454F'
+                }}
+                transition={{duration:1.25,type:"keyframes", ease:"easeOut"}}
+                >
+                </motion.div>
             </div>
         )}
         else {
@@ -134,7 +182,7 @@ export default function QuizQuestions(props){
             let updated=progressNumbers.map((ques)=>{
             if(ques.id===id){
                 let newStatus=ques.status.filter((stat)=>stat!=="neutral")
-                return {...ques, status:newStatus.includes("active")?[...newStatus]:[...newStatus,"active"]}
+                return {...ques, status:newStatus.includes("active")?[...newStatus]:[...newStatus,"active"],clickFrom:"stepper"}
             }
             if(ques.id!==id){
                 let newStatus=ques.status.filter((stat)=>stat!=="active")
@@ -144,7 +192,7 @@ export default function QuizQuestions(props){
 
         for( let i=0;i<=updated.length-1;i++){
             if(updated[i].id===id){
-                setDisplayTriviaData({...updated[i]})
+                setDisplayTriviaData({...updated[i],clickFrom:"stepper"})
             }
         }
         return updated
@@ -175,7 +223,7 @@ export default function QuizQuestions(props){
             })
             for( let i=0;i<=updated.length-1;i++){
                 if(updated[i].id===id){
-                    setDisplayTriviaData({...updated[i]})
+                    setDisplayTriviaData({...updated[i],clickFrom:"option"})
                 }
             }
             return updated
@@ -186,9 +234,14 @@ export default function QuizQuestions(props){
     function displayTriviaItemsFunction(dataObj){
         let selectedIncorrectAns=""
         let  correctAnswer=dataObj.correctAnswer
+        let isAnswered=dataObj.answered
         let classBtn=dataObj.optionsStatus==="correctAns"||dataObj.optionsStatus==="incorrectAns"?"CorrectAns":""
         let optionsButtons=dataObj.options.map((ele)=>{
             return <motion.button key={ele} onClick={()=>handleOptionClick(ele, dataObj.id)} className={ele===correctAnswer?classBtn:""} style={{backgroundColor:dataObj.incorrectAnsState[ele]===true && "#EF4444", color:dataObj.incorrectAnsState[ele]===true && "white"}}
+            initial={false}
+            animate={{x:classBtn && ele===correctAnswer?[0, -10, 10, -10, 10, 0]:0,y:classBtn && ele===correctAnswer?[0, -10, 10, -10, 10, 0]:0}}       
+            transition={{duration:0.5,}}
+            disabled={isAnswered}
             >{ele}</motion.button>
         })
 
@@ -196,12 +249,12 @@ export default function QuizQuestions(props){
        
         return(
             <AnimatePresence mode="wait">
-                <motion.div
+                <motion.div className="quiz-div"
                     key={dataObj.id}
                     initial={{ rotateX: 90, opacity: 0 }}
                     animate={{ rotateX: 0, opacity: 1 }}
                     exit={{ rotateX: -90, opacity: 0 }}
-                    transition={{ duration: 0.25 }}
+                    transition={{ duration: 0.25, delay:dataObj.clickFrom=="option"?1.25:0}}
                 >
                     <motion.h1>{dataObj.ques.text}</motion.h1>
                     <motion.section className="ques-options">
@@ -228,14 +281,28 @@ export default function QuizQuestions(props){
         return ClassNameForProgress
     }
 
-    function ClassForProgressArrow(ques){
-        let ClassNameForProgressArrow=clsx({
-            progressArrow:true,
-            ArrowColor:ques.status.includes("correct") || ques.status.includes("inCorrect"),
-        })
-        return ClassNameForProgressArrow
+    function ClassForProgress2(status){
+        if(status.includes("neutral")){
+            if(status.includes("inCorrect")){
+                return "neutralIncorrect"
+            }
+            else if(status.includes("correct")){
+                return "neutralCorrect"
+            }
+            else return "neutral"
+        }
+        else if(status.includes("active")){
+            if(status.includes("inCorrect")){
+                return "activeIncorrect"
+            }
+            else if(status.includes("correct")){
+                return 'activeCorrect'
+            }
+            else return "active"
+        }
+        else return null
     }
-    
+
     
 
     // console.log(progressNumbers)
