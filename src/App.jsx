@@ -7,7 +7,7 @@ import {difficultyArr} from "./utils/difficulty"
 import { clsx } from "clsx"
 
 export default function App(){
-  const[range,setRange]=React.useState([3])
+  const[range,setRange]=React.useState([5])
   const[category,setCategory]=React.useState(categoryArr)
   const[difficulty,setDifficulty]=React.useState(difficultyArr)
   const startGameBtnVisible=category.some(cat=>cat.isSelected===true) && difficulty.some(dif=>dif.isSelected)
@@ -73,7 +73,7 @@ export default function App(){
         </>
         } 
         {isLoading && <span className="loader"></span>}
-        {responseArr.length!=0 && !isLoading && <QuizQuestions responseArr={responseArr}/>}
+        {responseArr.length!=0 && !isLoading && <QuizQuestions responseArr={responseArr} setResponseArr={setResponseArr}/>}
       </main>
   )
 }

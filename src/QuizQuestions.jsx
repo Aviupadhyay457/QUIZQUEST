@@ -11,6 +11,7 @@ export default function QuizQuestions(props){
     let correctlyAnsweredQuestions=progressNumbers.filter(ques=>ques.answeredCorrectly)
     console.log(correctlyAnsweredQuestions.length)
     let score=correctlyAnsweredQuestions.length
+    let [showGameOver, setShowGameOver]=useState(false)
     // const prevQuesNumber=React.useRef(null)
     // let dataObj=progressNumbers.find(ques=>ques.status.includes("active"))||null
     // let traversingForward=prevQuesNumber.current===null ? true : (dataObj!==null && prevQuesNumber.current<dataObj.number)
@@ -29,6 +30,10 @@ export default function QuizQuestions(props){
     
     React.useEffect(()=>{
         let nextQuesIndex=-1
+        let isThisFirstRender=progressNumbers.every(ques=>ques.answered===false)
+        // let isEverythingAnswered=progressNumbers.every(ques=>ques.answered===true)
+        
+
         for(let i=0;i<=progressNumbers.length-1;i++){
             if(nextQuesIndex!==-1 && progressNumbers[i].status.includes("active")){
                 nextQuesIndex=i+1
@@ -37,6 +42,7 @@ export default function QuizQuestions(props){
                 nextQuesIndex=0
                 if(progressNumbers[0].status.includes("active")){
                     nextQuesIndex=1
+                    
                 }
             }
             
@@ -50,8 +56,15 @@ export default function QuizQuestions(props){
 
         let id=progressNumbers[nextQuesIndex].id
 
+        if(isThisFirstRender){
+            setAnimationDelay(0)
+        }
+        else{
+            setAnimationDelay(1.25)
+        }
+        
 
-        setAnimationDelay(1.25)
+        
 
         setProgressNumbers((progressNumbers)=>{
 
@@ -75,14 +88,18 @@ export default function QuizQuestions(props){
         }
         )
 
+        
     },[answeredChangeNotice])
 
-    // React.useEffect(()=>{
-    //     if(dataObj!=null){
-    //         prevQuesNumber.current=dataObj.number
-    //     }
-        
-    // },[dataObj])
+    React.useEffect(()=>{
+        const timer=setTimeout(()=>{
+            setShowGameOver(progressNumbers.every(ques=>ques.answered===true))
+        },2000)
+        return function(){
+            clearTimeout(timer)
+        }
+    },[progressNumbers.every(ques=>ques.answered===true)])
+
 
     function ProgressNumbersFun(){
         let y=props.responseArr.map((arr,index)=>(
@@ -274,7 +291,7 @@ export default function QuizQuestions(props){
         
         
         setProgressNumbers((PrevProgressNumbers)=>{
-            setAnimationDelay(1.25)
+            // setAnimationDelay(1.25)
             let updated=PrevProgressNumbers.map((ques)=>{
                 if(ques.id===id && ques.answered===false){
                     if(ques.correctAnswer===optionclickedText){
@@ -374,17 +391,54 @@ export default function QuizQuestions(props){
         else return null
     }
 
+    const disabledStyle = showGameOver ? { pointerEvents: 'none', opacity: '0.4' } : {}
     
 
     // console.log(progressNumbers)
+    // console.log(isEverythingAnswered)
     return(
-        <section className="quiz-page">
-            <h1>Score:{score}</h1>
-        <section  className="progress-section">
+        <section className="quiz-page" style={{}}>
+            <motion.h1 className="score"
+            key={score}
+            initial={{ scale:1.5, opacity: 0 }}
+            animate={{scale:1, opacity: 1 }}
+            exit={{ scale:1.5, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            
+            >Score:
+            <motion.span
+            key={score}
+            initial={{ rotateX: 90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            exit={{ rotateX: -90, opacity: 0 }}
+            transition={{ duration: 1.25 }}
+            style={{
+              display: "inline-block",
+              transformOrigin: "center",
+              backfaceVisibility: "hidden",
+              opacity:showGameOver?0.4:1,
+              pointerEvents:showGameOver&&"none"
+            }}
+          >
+            {score}
+          </motion.span></motion.h1>
+        <section  className="progress-section"  style={disabledStyle}>
             {progressNumbersItemsFun()}
         </section>
-        <section className="quiz-section">
+        <section className="quiz-section" style={disabledStyle}>
             {Object.keys(displayTriviaData).length!==0 && displayTriviaItemsFunction(displayTriviaData)}
+        </section>
+        <section className="game-over" style={{display: showGameOver?"flex":"none"}}>
+            <i className="fa-solid fa-xmark close-popup-btn" onClick={()=> setShowGameOver(false)}></i>
+            <h1>Your Score</h1>
+            <h2>{score}</h2>
+            <motion.button className="play-again-btn"
+            initial={{ rotateY:30}}
+            animate={{ rotateY: 0  }}
+            exit={{ rotateY: 30}}
+            transition={{duration:1, repeat:Infinity}}
+            onClick={()=>props.setResponseArr([])}
+            >Play Again??</motion.button>
         </section>
         </section>
     )

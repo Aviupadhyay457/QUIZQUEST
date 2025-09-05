@@ -3,8 +3,22 @@
     flex-direction: column;
     gap:40px;
     width: 100%;
-    margin-top: 70px;
+    height: 100%;
+    padding-top: 10px;
+    align-items: center;
 }
+
+.score{
+    align-self:flex-end;
+    margin-right: 50px;
+    color:white;
+}
+
+.score span{
+    margin-left: 15px;
+    font-size: 35px;
+}
+
 .progress-section{
     display: flex;
     flex-direction: row;
@@ -120,7 +134,7 @@
     grid-template: 1fr 1fr/1fr 1fr;
     row-gap:20px;
     column-gap: 30px;
-    height:150px;
+    min-height:150px;
     padding-left: 20px;
     padding-right: 20px;
     
@@ -137,6 +151,7 @@
     font-weight: 500;
     opacity: 0.8;
     transition: opacity 1s;
+    
 }
 
 .ques-options button:hover{
@@ -151,11 +166,55 @@
     opacity: 1;
 }
 
-/* @keyframes correctAnsAnim {
-    from{
-        transform: scale(1) rotateY(20 deg);
-    }
-    to{
-         transform: scale(1.2) rotateY(0 deg);
-    }
-} */
+
+.game-over{
+    position: fixed;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    width:350px;
+    height: 350px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgb(0,0,0,0.2);
+    flex-direction: column;
+    padding: 20px;
+    /* justify-content: center; */
+    align-items: center;
+    gap:30px
+}
+
+.close-popup-btn{
+    align-self: flex-end;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.close-popup-btn:hover{
+    color:#FF3E6C;
+}
+.close-popup-btn:active{
+    color:#0D47A1;
+}
+
+.game-over h1{
+    font-size: 25px;
+    color:#FF3E6C;
+}
+
+.game-over h2{
+    font-size: 35px;
+    color:#FF3E6C;
+}
+
+.play-again-btn{
+    display: inline-block;
+    background-color: #0D47A1;
+    color:white;
+    border:none;
+    border-radius: 15px;
+    font-size: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+
