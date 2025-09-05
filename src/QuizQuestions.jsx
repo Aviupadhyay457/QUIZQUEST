@@ -7,6 +7,10 @@ export default function QuizQuestions(props){
     const [progressNumbers,setProgressNumbers]=useState(ProgressNumbersFun())// progressNumbers is the main array, removed question arr so that there remains a single source of truth
     const [displayTriviaData, setDisplayTriviaData]=useState({})
     const answeredChangeNotice= progressNumbers.map((ele)=>ele.answered).join("")
+    const[animationDelay, setAnimationDelay]=useState(0)
+    let correctlyAnsweredQuestions=progressNumbers.filter(ques=>ques.answeredCorrectly)
+    console.log(correctlyAnsweredQuestions.length)
+    let score=correctlyAnsweredQuestions.length
     // const prevQuesNumber=React.useRef(null)
     // let dataObj=progressNumbers.find(ques=>ques.status.includes("active"))||null
     // let traversingForward=prevQuesNumber.current===null ? true : (dataObj!==null && prevQuesNumber.current<dataObj.number)
@@ -40,9 +44,37 @@ export default function QuizQuestions(props){
         if(nextQuesIndex>progressNumbers.length-1){
             nextQuesIndex=0
         }
-        console.log(nextQuesIndex)
-        console.log(progressNumbers[nextQuesIndex])
-        handleprogressStepperClick(progressNumbers[nextQuesIndex].id)
+        // console.log(nextQuesIndex)
+        // console.log(progressNumbers[nextQuesIndex])
+        // handleprogressStepperClick(progressNumbers[nextQuesIndex].id) // replacing this with whole code of it, and fixing setAnimationDelay to 1.25
+
+        let id=progressNumbers[nextQuesIndex].id
+
+
+        setAnimationDelay(1.25)
+
+        setProgressNumbers((progressNumbers)=>{
+
+            let updated=progressNumbers.map((ques)=>{
+            if(ques.id===id){
+                let newStatus=ques.status.filter((stat)=>stat!=="neutral")
+                return {...ques, status:newStatus.includes("active")?[...newStatus]:[...newStatus,"active"],clickFrom:"stepper"}
+            }
+            if(ques.id!==id){
+                let newStatus=ques.status.filter((stat)=>stat!=="active")
+                return {...ques, status:newStatus.includes("neutral")?[...newStatus]:[...newStatus,"neutral"]}
+            }
+        })
+
+        for( let i=0;i<=updated.length-1;i++){
+            if(updated[i].id===id){
+                setDisplayTriviaData({...updated[i],clickFrom:"stepper"})
+            }
+        }
+        return updated
+        }
+        )
+
     },[answeredChangeNotice])
 
     // React.useEffect(()=>{
@@ -112,10 +144,10 @@ export default function QuizQuestions(props){
                         backgroundColor:"#22C55E",
                         color:"#FFFFFF",
                         border:'4px solid #2563eb',  
-                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)',   
                     },
                 }}
-                transition={{delay:ques.clickFrom=="stepper"?0:1.25}}
+                transition={{delay:animationDelay}}
                     >
                          {ques.number}
                 </motion.button>
@@ -134,8 +166,46 @@ export default function QuizQuestions(props){
         else {
             return(
             <div key={ques.id} className="progress-outer-div">
-                <button key={ques.id} className={ClassForProgress(ques.status)} onClick={()=> handleprogressStepperClick(ques.id)}> {ques.number}
-                </button>
+                <motion.button className="progressBtn" 
+                animate={ClassForProgress2(ques.status)}
+                onClick={()=> handleprogressStepperClick(ques.id)}
+                variants={{
+                    neutral:{
+                        backgroundColor:"#334155"
+                    },
+                    active:{
+                        backgroundColor:"#FFFFFF",
+                        color:"#000000",
+                        border:'4px solid #2563eb',
+                        boxShadow:'0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                    neutralIncorrect:{
+                        backgroundColor:"#EF4444",
+                        color:"#FFFFFF",
+                        border:'1px solid #EF4444',  
+                    },
+                    neutralCorrect:{
+                        backgroundColor:"#22C55E",
+                        color:"#FFFFFF",
+                        border:'1px solid #22C55E',  
+                    },
+                    activeIncorrect:{
+                        backgroundColor:"#EF4444",
+                        color:"#FFFFFF",
+                        border:'4px solid #2563eb',  
+                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                    activeCorrect:{
+                        backgroundColor:"#22C55E",
+                        color:"#FFFFFF",
+                        border:'4px solid #2563eb',  
+                        boxShadow: '0 0 6px 2px rgba(37, 99, 235, 0.7)'
+                    },
+                }}
+                transition={{delay:animationDelay}}
+                    >
+                         {ques.number}
+                </motion.button>
             </div>
             
             )
@@ -175,8 +245,8 @@ export default function QuizQuestions(props){
 
     function handleprogressStepperClick(id){
         // console.log("click working")
+        setAnimationDelay(0)
 
-        
         setProgressNumbers((progressNumbers)=>{
 
             let updated=progressNumbers.map((ques)=>{
@@ -202,8 +272,9 @@ export default function QuizQuestions(props){
 
     function handleOptionClick(optionclickedText, id){
         
+        
         setProgressNumbers((PrevProgressNumbers)=>{
-
+            setAnimationDelay(1.25)
             let updated=PrevProgressNumbers.map((ques)=>{
                 if(ques.id===id && ques.answered===false){
                     if(ques.correctAnswer===optionclickedText){
@@ -213,7 +284,7 @@ export default function QuizQuestions(props){
                         {
                             let incorrectAnsStateUpdate = {...ques.incorrectAnsState}
                             incorrectAnsStateUpdate[optionclickedText]=true
-                            console.log(incorrectAnsStateUpdate)
+                            // console.log(incorrectAnsStateUpdate)
 
                             return {...ques,status:[...ques.status,"inCorrect"], optionsStatus:"incorrectAns", incorrectAnsState:{...incorrectAnsStateUpdate}, answered:true}
                         }
@@ -308,6 +379,7 @@ export default function QuizQuestions(props){
     // console.log(progressNumbers)
     return(
         <section className="quiz-page">
+            <h1>Score:{score}</h1>
         <section  className="progress-section">
             {progressNumbersItemsFun()}
         </section>
