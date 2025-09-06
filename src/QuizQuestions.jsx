@@ -356,18 +356,18 @@ export default function QuizQuestions(props){
     
 
 
-    function ClassForProgress(status){
-        let ClassNameForProgress=clsx({
-            progressBtn:true,
-            neutral: status.includes("neutral"),
-            active:status.includes("active"),
-            neutralIncorrect: status.includes("neutral") && status.includes("inCorrect"),
-            neutralCorrect:status.includes("neutral") && status.includes("correct"),
-            activeIncorrect:status.includes("active") && status.includes("inCorrect"),
-            activeCorrect:status.includes("active") && status.includes("correct"),
-        })
-        return ClassNameForProgress
-    }
+    // function ClassForProgress(status){
+    //     let ClassNameForProgress=clsx({
+    //         progressBtn:true,
+    //         neutral: status.includes("neutral"),
+    //         active:status.includes("active"),
+    //         neutralIncorrect: status.includes("neutral") && status.includes("inCorrect"),
+    //         neutralCorrect:status.includes("neutral") && status.includes("correct"),
+    //         activeIncorrect:status.includes("active") && status.includes("inCorrect"),
+    //         activeCorrect:status.includes("active") && status.includes("correct"),
+    //     })
+    //     return ClassNameForProgress
+    // }
 
     function ClassForProgress2(status){
         if(status.includes("neutral")){

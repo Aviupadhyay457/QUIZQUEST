@@ -223,6 +223,8 @@ input[type="range"]::-moz-range-thumb{
 
 
 @media (min-width: 1210px) {
+
+  
   .categories-btn{
     width:130px;
     height: 130px;
@@ -243,5 +245,167 @@ input[type="range"]::-moz-range-thumb{
   }
   .category h3{
     color:white;
+  }
+}
+
+
+
+@media(max-width:1067px){
+  .categories-btn{
+    width:100px;
+    height: 100px;
+  }
+  .categories-btn i{
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  .category h3{
+    font-size: 0.75rem;
+  }
+  .difficulty-range-wrapper{
+    gap:2.5rem;
+    flex-direction: column;
+  }
+  .difficulty-container label{
+    font-size: 0.75rem;
+  }
+}
+
+@media(max-width:953px){
+  .categories-btn{
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media(max-width:886px){
+  .categories-btn{
+    width: 85px;
+    height: 85px;
+  }
+  .categories-btn i{
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+  .category h3{
+    font-size: 0.65rem;
+  }
+  .difficulty-container label{
+    font-size: 0.65rem;
+  }
+
+}
+
+@media(max-width:837px){
+  .categories-btn{
+    width: 75px;
+    height: 75px;
+    gap: 15px;
+  }
+  .categories-btn i{
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+  }
+  .category h3{
+    font-size: 0.5rem;
+  }
+  .difficulty-container label{
+    font-size: 0.5rem;
+  }
+
+}
+@media (max-width:722px){
+  aside{
+    gap:0.5rem;
+  }
+}
+
+
+
+@media (max-width:630px){
+  .categories-section h2{
+    font-size: 1.25rem;
+  }
+  /* .categories-container{
+    gap:20px;
+  } */
+  aside{
+    width: 100%;
+    padding-left: 0.5rem;
+  }
+  .difficulty-range-wrapper{
+    flex-direction: column;
+    gap:1rem;
+  }
+  .main-component{
+    width: 100%;
+  }
+  .categories-section{
+    width: 100%;
+    gap:0.75rem;
+  }
+  .categories-container{
+    box-sizing: border-box;
+  }
+  .categories-btn{
+    width: 80px;
+    height:70px;
+  }
+  .categories-btn i{
+    font-size: 0.75rem;
+    /* display: none; */
+  }
+  .category{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .category h3{
+    font-size: 0.5rem;
+    /* padding: 0.5rem 0.5rem; */
+  }
+  .difficulty-section{
+    gap:0.75rem;
+  }
+  .difficulty-section h2{
+    font-size: 1.25rem;
+  }
+  .difficulty-container{
+    gap:10px;
+  }
+  .difficulty-container label{
+    width: 80px;
+    height: 40px;
+    font-size: 0.5rem;
+  }
+  .range-section{
+    gap:1.25rem;
+  }
+  .range-section h2{
+    font-size: 1.25rem;
+  }
+  input[type="range"]{
+    width: 140px;
+    height: 20px;
+  }
+  input[type="range"]::-webkit-slider-runnable-track{
+    height: 20px;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    height: 20px;
+    width: 20px;
+  }
+  input[type="range"]::-moz-range-track{
+    height: 20px;
+  }
+  input[type="range"]::-moz-range-thumb{
+    height: 20px;
+    width: 20px;
+  }
+  .range-container h3{
+    font-size: 1rem;
+  }
+  .range-container{
+    gap:0.5rem;
   }
 }

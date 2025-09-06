@@ -68,8 +68,9 @@ export default function App(){
       <main className={mainStyleClass}>
         { (responseArr.length===0 && !isLoading) &&
         <>
-        <Aside category={category} categoryUpdate={categoryUpdate} range={range} setRange={setRange} difficulty={difficulty} setDifficulty={setDifficulty}/>
         <MainComponent startGameBtnVisible={startGameBtnVisible} fetchTrivia={()=>fetchTrivia()} />
+        <Aside category={category} categoryUpdate={categoryUpdate} range={range} setRange={setRange} difficulty={difficulty} setDifficulty={setDifficulty}/>
+        
         </>
         } 
         {isLoading && <span className="loader"></span>}
