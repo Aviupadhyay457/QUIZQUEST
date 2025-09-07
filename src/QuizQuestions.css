@@ -181,7 +181,9 @@
     padding: 20px;
     /* justify-content: center; */
     align-items: center;
-    gap:30px
+    gap:20px;
+    background: url(./assets/bgQuiz5.svg);
+    color:white;
 }
 
 .close-popup-btn{
@@ -197,18 +199,18 @@
 }
 
 .game-over h1{
-    font-size: 25px;
-    color:#FF3E6C;
+    font-size: 35px;
+    /* color:#FF3E6C; */
 }
 
 .game-over h2{
-    font-size: 35px;
-    color:#FF3E6C;
+    font-size: 45px;
+    /* color:#FF3E6C; */
 }
 
 .play-again-btn{
     display: inline-block;
-    background-color: #0D47A1;
+    background-color: #6495ED;
     color:white;
     border:none;
     border-radius: 15px;

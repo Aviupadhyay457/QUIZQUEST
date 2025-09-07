@@ -438,7 +438,7 @@ export default function QuizQuestions(props){
             exit={{ rotateY: 30}}
             transition={{duration:1, repeat:Infinity}}
             onClick={()=>props.setResponseArr([])}
-            >Play Again??</motion.button>
+            >Play Again?</motion.button>
         </section>
         </section>
     )
