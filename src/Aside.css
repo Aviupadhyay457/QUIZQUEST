@@ -219,6 +219,8 @@ input[type="range"]::-moz-range-thumb{
   color:white;
 }
 
+
+
 @media (min-width: 1210px) {
 
   
@@ -405,4 +407,13 @@ input[type="range"]::-moz-range-thumb{
   .range-container{
     gap:0.5rem;
   }
+}
+
+@media (min-width:1410px){
+  .categories-btn{
+    width:150px;
+    height: 150px;
+   
+  }
+
 }
