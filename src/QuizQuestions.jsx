@@ -9,7 +9,7 @@ export default function QuizQuestions(props){
     const answeredChangeNotice= progressNumbers.map((ele)=>ele.answered).join("")
     const[animationDelay, setAnimationDelay]=useState(0)
     let correctlyAnsweredQuestions=progressNumbers.filter(ques=>ques.answeredCorrectly)
-    console.log(correctlyAnsweredQuestions.length)
+    // console.log(correctlyAnsweredQuestions.length)
     let score=correctlyAnsweredQuestions.length
     let [showGameOver, setShowGameOver]=useState(false)
     // const prevQuesNumber=React.useRef(null)

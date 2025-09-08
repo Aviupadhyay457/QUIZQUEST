@@ -29,7 +29,7 @@ export const categoryArr=[
     {
         id:10,
         name:"Music",
-        icon:"fa-solid fa-paw",
+        icon:"fa-solid fa-music",
         isSelected:false,
         bgColor:"#F94E4E",
         apiName:"music"
@@ -37,7 +37,7 @@ export const categoryArr=[
     {
         id:6,
         name:"Geography",
-        icon:"fa-solid fa-masks-theater",
+        icon:"fa-solid fa-earth-africa",
         isSelected:false,
         bgColor:"#E6C642",
         apiName:"geography"
@@ -79,7 +79,7 @@ export const categoryArr=[
     {
         id:3,
         name:"Food & Drinks",
-        icon:"fa-solid fa-laptop",
+        icon:"fa-solid fa-bowl-food",
         isSelected:false,
         bgColor:"#A656FD",
         apiName:"food_and_drink"
