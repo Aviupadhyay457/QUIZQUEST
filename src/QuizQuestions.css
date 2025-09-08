@@ -306,7 +306,21 @@
 }
 @media(max-width:577px){
     .progress-section{
-        display:none;
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap:10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .progressBtn{
+        width: 25px;
+        height: 25px;
+        font-size:0.75rem;
+        align-items: center;
+    }
+    .progressArrow{
+        display:none
     }
     .quiz-div{
     width: 300px;
