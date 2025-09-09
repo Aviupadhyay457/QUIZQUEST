@@ -44,7 +44,7 @@ An interactive and engaging quiz application built with React.js that allows use
 ## 🎮 How to Use
 
 ### 1. **Quiz Setup**
-   - Select the number of questions you want (5, 10, 15, or 20)
+   - Select the number of questions you want
    - Choose your preferred category (Science, History, Sports, etc.)
    - Pick your difficulty level (Easy, Medium, or Hard)
    - Click "Start Quiz" to begin
